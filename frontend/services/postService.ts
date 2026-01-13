@@ -2,7 +2,8 @@
 import { Post } from '../types';
 import { getDb, saveDb } from './mockDb';
 
-const API_URL = 'http://localhost:5000/api';
+// Use environment variable for API URL in production, fallback to localhost for development
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Check if backend is available
 const isBackendAvailable = async (): Promise<boolean> => {

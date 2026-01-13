@@ -8,8 +8,8 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 5000;
-const JWT_SECRET = 'storyconnect_secret_key_2026';
+const PORT = process.env.PORT || 5000;
+const JWT_SECRET = process.env.JWT_SECRET || 'storyconnect_secret_key_2026';
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -47,19 +47,22 @@ const upload = multer({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*',
+  credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve uploaded files statically
 app.use('/uploads', express.static(uploadsDir));
 
-// MySQL Connection Pool
+// MySQL Connection Pool - Use environment variables for production
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'storyconnect',
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'root',
+  database: process.env.DB_NAME || 'storyconnect',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
