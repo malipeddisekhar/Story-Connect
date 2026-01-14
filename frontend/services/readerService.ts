@@ -1,8 +1,8 @@
 import { Post } from '../types';
 import { getDb } from './mockDb';
 
-// Use environment variable for API URL in production, fallback to localhost for development
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Use environment variable for API URL in production, fallback to production URL
+const API_URL = import.meta.env.VITE_API_URL || 'https://storyconnect-backend.onrender.com/api';
 
 // Helper to convert API response to Post format
 const mapPost = (data: any): Post => ({
