@@ -64,7 +64,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'storyconnect',
   port: process.env.DB_PORT || 5432,
-  ssl: process.env.DB_SSL === 'true' $1 { rejectUnauthorized: false } : false,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
@@ -154,7 +154,7 @@ app.post('/api/auth/login', async (req, res) => {
 // Get current user
 app.get('/api/auth/me', async (req, res) => {
   try {
-    const token = req.headers.authorization$1.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
       return res.status(401).json({ error: 'No token provided' });
     }
