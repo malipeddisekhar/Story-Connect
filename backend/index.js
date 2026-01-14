@@ -344,7 +344,7 @@ app.post('/api/posts/:postId/comments', async (req, res) => {
       `SELECT c.*, u.username, u.avatar 
        FROM comments c 
        JOIN users u ON c.user_id = u.id 
-       WHERE c.id = ?`,
+       WHERE c.id = $1`,
       [result[0].id]
     )).rows;
     res.json(comments[0]);
