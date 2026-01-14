@@ -1,48 +1,146 @@
-# StoryConnect
+🌍 StoryConnect
 
-A professional storytelling platform with role-based access, reader features, and MySQL database.
+A professional storytelling platform for authors, readers, and admins
 
-## Quick Start
+Live Demo: https://storyconnect-frontend.onrender.com/#/
 
-### Prerequisites
-- Node.js 18+
-- MySQL Server
+Backend & Frontend: React + Express + MySQL
+Collaboration Contact:
+📩 malipeddisekhar63@gmail.com
 
-### Setup
+📞 +91 91105 73442
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   cd server && npm install
-   ```
+🎯 Project Aim
 
-2. **Setup database:**
-   ```bash
-   mysql -u root -p < setup-database.sql
-   ```
+StoryConnect is designed to function as a real-time, production-ready platform where:
 
-3. **Update MySQL password** in `server/index.js` (line 18)
+Writers publish stories
 
-4. **Start servers:**
-   ```bash
-   # Terminal 1 - Backend
-   cd server && node index.js
-   
-   # Terminal 2 - Frontend
-   npm run dev
-   ```
+Readers discover, like, and comment
 
-5. Open http://localhost:3000
+Admins manage users and maintain content quality
 
-## Test Accounts
-- **Admin:** admin@storyconnect.com / password123
-- **Author:** jane@storyconnect.com / password123
-- **Reader:** reader@storyconnect.com / password123
+This application demonstrates full-stack development, secure role-based access, and deployment using Render, suitable for college projects, portfolios, or startup MVPs.
 
-## Features
-- 📚 Story reading & discovery
-- ❤️ Like & bookmark stories
-- 💬 Comments
-- 👥 Follow authors
-- ✍️ Story creation (Author/Admin)
-- 🛠️ User management (Admin)
+🏗️ Architecture Overview
+Layer	Technology
+Frontend	React + Vite
+Backend	Node.js + Express
+Database	MySQL
+Auth	JWT-based secure login
+Hosting	Render/Cloud
+
+Roles implemented:
+
+Admin – Total control (users, stories)
+
+Author – Post stories, manage their own content
+
+Reader – Explore, like, bookmark, comment & follow authors
+
+🚀 Live Deployment
+Module	Hosted URL
+Frontend	https://storyconnect-frontend.onrender.com/#/
+
+Backend	(Deploy your backend on Render / Railway / Vercel or local machine)
+
+The frontend is live and fully functional.
+Backend setup required to enable full data flow if running locally.
+
+🛠️ Run Locally – Quick Start
+📌 Prerequisites
+
+Node.js 18+
+
+MySQL Server
+
+📥 Clone & Install
+git clone https://github.com/YOUR_REPO/storyconnect.git
+cd storyconnect
+npm install
+cd server && npm install
+
+🗄️ Setup MySQL
+
+Run:
+
+mysql -u root -p < setup-database.sql
+
+
+Update MySQL password:
+📂 server/index.js → around line 18
+
+▶️ Start Servers
+Start Backend
+cd server
+node index.js
+
+Start Frontend
+npm run dev
+
+
+Open 👉 http://localhost:3000/
+
+👤 Test Accounts
+Role	Email	Password
+Admin	admin@storyconnect.com
+	password123
+Author	jane@storyconnect.com
+	password123
+Reader	reader@storyconnect.com
+	password123
+🌟 Features
+Reader Functionality
+
+🔍 Explore stories
+
+❤️ Like & bookmark
+
+💬 Comment
+
+👤 Follow favorite authors
+
+Author Functionality
+
+✍️ Create stories
+
+📝 Manage published content
+
+📈 Build audience
+
+Admin Functionality
+
+🧑‍✈️ Manage users (add/disable/delete)
+
+🧹 Monitor platform activity
+
+🛡️ Maintain platform quality
+
+📦 Folder Structure (High Level)
+/client         → React frontend
+/server         → Express backend
+/setup-database.sql → DB schema & seed
+
+🧩 Technology Stack
+
+React + Vite
+
+Express.js
+
+JWT Authentication
+
+BCrypt password security
+
+MySQL & SQL migrations
+
+Axios communication
+
+🤝 Want to Collaborate?
+💬 Contact
+
+📩 malipeddisekhar63@gmail.com
+
+📞 +91 91105 73442
+
+Contributors, UI designers, backend developers & testers welcome 🚀
+Let’s grow StoryConnect together ❤️
