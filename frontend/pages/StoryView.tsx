@@ -34,6 +34,7 @@ const StoryView: React.FC = () => {
   const [newComment, setNewComment] = useState('');
   const [showComments, setShowComments] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [shareMessage, setShareMessage] = useState('');
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -115,6 +116,47 @@ const StoryView: React.FC = () => {
     if (window.confirm('Are you sure you want to permanently delete this story?')) {
       await deletePost(post.id);
       navigate('/');
+    }
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    
+    try {
+      // Try native share API first (mobile devices)
+      if (navigator.share) {
+        await navigator.share({
+          title: post?.title || 'Story',
+          text: post?.excerpt || 'Check out this story!',
+          url: url
+        });
+        setShareMessage('Shared successfully!');
+      } else {
+        // Fallback to clipboard for desktop
+        await navigator.clipboard.writeText(url);
+        setShareMessage('Link copied to clipboard!');
+      }
+      
+      // Clear message after 3 seconds
+      setTimeout(() => setShareMessage(''), 3000);
+    } catch (error) {
+      console.error('Share failed:', error);
+      // Manual fallback if clipboard fails
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setShareMessage('Link copied to clipboard!');
+        setTimeout(() => setShareMessage(''), 3000);
+      } catch (err) {
+        setShareMessage('Unable to copy link');
+        setTimeout(() => setShareMessage(''), 3000);
+      }
+      document.body.removeChild(textArea);
     }
   };
 
@@ -243,12 +285,18 @@ const StoryView: React.FC = () => {
 
             {/* Share Button */}
             <button 
-              onClick={() => navigator.clipboard.writeText(window.location.href)}
-              className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-bold hover:shadow-lg transition-all text-slate-700 dark:text-slate-300"
+              onClick={handleShare}
+              className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-bold hover:shadow-lg transition-all text-slate-700 dark:text-slate-300 relative"
+              title="Share this story"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
               </svg>
+              {shareMessage && (
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-green-600 text-white text-xs rounded-lg whitespace-nowrap">
+                  {shareMessage}
+                </span>
+              )}
             </button>
           </div>
 
