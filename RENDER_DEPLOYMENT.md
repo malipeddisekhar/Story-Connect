@@ -6,10 +6,10 @@
 
 ## Step-by-Step Deployment Instructions
 
-### 1. Create a MySQL Database on Render
+### 1. Create a PostgreSQL Database on Render
 
 1. Go to https://render.com and log in
-2. Click **"New +"** → **"MySQL"**
+2. Click **"New +"** → **"PostgreSQL"**
 3. Configure the database:
    - **Name**: `storyconnect-db`
    - **Database**: `storyconnect`
@@ -23,20 +23,20 @@
    - Username
    - Password
    - Database Name
-   - Port
+   - Port (usually 5432)
 
 ### 2. Run Database Setup Script
 
 After the database is created:
 
-1. In Render dashboard, go to your MySQL database
-2. Click on **"Connect"** → **"External Connection"** 
-3. Use a MySQL client (like MySQL Workbench, DBeaver, or command line) to connect
-4. Run the SQL script from `backend/setup-database.sql`
+1. In Render dashboard, go to your PostgreSQL database
+2. Click on **"Connect"** → **"PSQL Command"** 
+3. Copy the connection command and run it in your terminal
+4. Once connected, copy and paste the SQL from `backend/setup-database-postgres.sql`
 
-OR use the Render Shell (if available):
-1. Click "Shell" in your database dashboard
-2. Copy and paste the SQL from `setup-database.sql`
+OR use a PostgreSQL client (like pgAdmin, DBeaver, or TablePlus):
+1. Connect using the credentials from Render
+2. Run the SQL script from `backend/setup-database-postgres.sql`
 
 ### 3. Deploy from Blueprint
 
@@ -54,16 +54,18 @@ OR use the Render Shell (if available):
 3. Add these environment variables:
 
 ```
-DB_HOST = <your-render-mysql-hostname>
-DB_USER = <your-render-mysql-username>
-DB_PASSWORD = <your-render-mysql-password>
+DB_HOST = <your-render-postgres-hostname>
+DB_USER = <your-render-postgres-username>
+DB_PASSWORD = <your-render-postgres-password>
 DB_NAME = storyconnect
+DB_PORT = 5432
+DB_SSL = true
 JWT_SECRET = storyconnect_secret_key_2026_render_production
 PORT = 10000
 FRONTEND_URL = https://storyconnect-frontend.onrender.com
 ```
 
-**Get DB credentials from your Render MySQL database "Connect" section**
+**Get DB credentials from your Render PostgreSQL database "Connect" section**
 
 4. Click **"Save Changes"**
 5. The backend will automatically redeploy
@@ -108,7 +110,7 @@ VITE_API_URL = https://storyconnect-backend.onrender.com/api
 ### Free Tier Limitations
 - Services sleep after 15 minutes of inactivity
 - First request after sleep takes ~30 seconds to wake up
-- Database has 1GB storage limit
+- PostgreSQL database has 1GB storage limit and 90 days retention
 
 ### Custom Domain (Optional)
 1. Go to each service
@@ -118,7 +120,8 @@ VITE_API_URL = https://storyconnect-backend.onrender.com/api
 ### Troubleshooting
 
 **If backend fails to connect to database:**
-- Verify all DB environment variables are correct
+- Verify all DB environment variables are correct (especially DB_PORT and DB_SSL)
+- Ensure DB_SSL is set to `true` for Render PostgreSQL
 - Check the database is running in Render dashboard
 - Look at backend logs for error messages
 
@@ -129,7 +132,7 @@ VITE_API_URL = https://storyconnect-backend.onrender.com/api
 
 **Build failures:**
 - Check the build logs for specific errors
-- Ensure `package.json` has all dependencies
+- Ensure `package.json` has `pg` instead of `mysql2`
 - Verify Node.js version compatibility
 
 ## Your Deployed URLs
