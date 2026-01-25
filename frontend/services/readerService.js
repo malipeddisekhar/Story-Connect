@@ -5,7 +5,7 @@ import { getDb } from './mockDb';
 const API_URL = import.meta.env.VITE_API_URL || 'https://storyconnect-backend.onrender.com/api';
 
 // Helper to convert API response to Post format
-const mapPost = (data: any): Post => ({
+const mapPost = (data) => ({
   id: data.id,
   title: data.title,
   excerpt: data.excerpt,
@@ -22,7 +22,7 @@ const mapPost = (data: any): Post => ({
 
 // ==================== BOOKMARKS ====================
 
-export const getBookmarks = async (userId: string): Promise<Post[]> => {
+export const getBookmarks = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/bookmarks/${userId}`);
     if (response.ok) {
@@ -35,7 +35,7 @@ export const getBookmarks = async (userId: string): Promise<Post[]> => {
   return [];
 };
 
-export const toggleBookmark = async (userId: string, postId: string): Promise<boolean> => {
+export const toggleBookmark = async (userId, postId) => {
   try {
     const response = await fetch(`${API_URL}/bookmarks`, {
       method: 'POST',
@@ -52,7 +52,7 @@ export const toggleBookmark = async (userId: string, postId: string): Promise<bo
   return false;
 };
 
-export const isBookmarked = async (userId: string, postId: string): Promise<boolean> => {
+export const isBookmarked = async (userId, postId) => {
   try {
     const response = await fetch(`${API_URL}/bookmarks/${userId}/${postId}`);
     if (response.ok) {
@@ -67,7 +67,7 @@ export const isBookmarked = async (userId: string, postId: string): Promise<bool
 
 // ==================== READING HISTORY ====================
 
-export const getReadingHistory = async (userId: string): Promise<Post[]> => {
+export const getReadingHistory = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/history/${userId}`);
     if (response.ok) {
@@ -80,7 +80,7 @@ export const getReadingHistory = async (userId: string): Promise<Post[]> => {
   return [];
 };
 
-export const addToHistory = async (userId: string, postId: string): Promise<void> => {
+export const addToHistory = async (userId, postId) => {
   try {
     await fetch(`${API_URL}/history`, {
       method: 'POST',
@@ -92,7 +92,7 @@ export const addToHistory = async (userId: string, postId: string): Promise<void
   }
 };
 
-export const clearHistory = async (userId: string): Promise<void> => {
+export const clearHistory = async (userId) => {
   try {
     await fetch(`${API_URL}/history/${userId}`, {
       method: 'DELETE'
@@ -104,7 +104,7 @@ export const clearHistory = async (userId: string): Promise<void> => {
 
 // ==================== LIKES ====================
 
-export const toggleLike = async (userId: string, postId: string): Promise<boolean> => {
+export const toggleLike = async (userId, postId) => {
   try {
     const response = await fetch(`${API_URL}/posts/${postId}/like`, {
       method: 'POST',
@@ -121,7 +121,7 @@ export const toggleLike = async (userId: string, postId: string): Promise<boolea
   return false;
 };
 
-export const getLikeCount = async (postId: string): Promise<number> => {
+export const getLikeCount = async (postId) => {
   try {
     const response = await fetch(`${API_URL}/posts/${postId}/likes`);
     if (response.ok) {
@@ -134,7 +134,7 @@ export const getLikeCount = async (postId: string): Promise<number> => {
   return 0;
 };
 
-export const isLiked = async (userId: string, postId: string): Promise<boolean> => {
+export const isLiked = async (userId, postId) => {
   try {
     const response = await fetch(`${API_URL}/posts/${postId}/likes/${userId}`);
     if (response.ok) {
@@ -149,17 +149,7 @@ export const isLiked = async (userId: string, postId: string): Promise<boolean> 
 
 // ==================== COMMENTS ====================
 
-export interface Comment {
-  id: number;
-  post_id: string;
-  user_id: string;
-  username: string;
-  avatar: string;
-  content: string;
-  created_at: string;
-}
-
-export const getComments = async (postId: string): Promise<Comment[]> => {
+export const getComments = async (postId) => {
   try {
     const response = await fetch(`${API_URL}/posts/${postId}/comments`);
     if (response.ok) {
@@ -171,7 +161,7 @@ export const getComments = async (postId: string): Promise<Comment[]> => {
   return [];
 };
 
-export const addComment = async (postId: string, userId: string, content: string): Promise<Comment | null> => {
+export const addComment = async (postId, userId, content) => {
   try {
     const response = await fetch(`${API_URL}/posts/${postId}/comments`, {
       method: 'POST',
@@ -189,18 +179,7 @@ export const addComment = async (postId: string, userId: string, content: string
 
 // ==================== FOLLOWS ====================
 
-export interface Author {
-  id: string;
-  username: string;
-  avatar: string;
-  bio: string;
-  role?: string;
-  story_count: number;
-  follower_count?: number;
-  followed_at?: string;
-}
-
-export const getFollowing = async (userId: string): Promise<Author[]> => {
+export const getFollowing = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/following/${userId}`);
     if (response.ok) {
@@ -212,7 +191,7 @@ export const getFollowing = async (userId: string): Promise<Author[]> => {
   return [];
 };
 
-export const getFollowers = async (userId: string): Promise<Author[]> => {
+export const getFollowers = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/followers/${userId}`);
     if (response.ok) {
@@ -224,7 +203,7 @@ export const getFollowers = async (userId: string): Promise<Author[]> => {
   return [];
 };
 
-export const toggleFollow = async (followerId: string, followingId: string): Promise<boolean> => {
+export const toggleFollow = async (followerId, followingId) => {
   try {
     const response = await fetch(`${API_URL}/follows`, {
       method: 'POST',
@@ -241,7 +220,7 @@ export const toggleFollow = async (followerId: string, followingId: string): Pro
   return false;
 };
 
-export const isFollowing = async (followerId: string, followingId: string): Promise<boolean> => {
+export const isFollowing = async (followerId, followingId) => {
   try {
     const response = await fetch(`${API_URL}/follows/${followerId}/${followingId}`);
     if (response.ok) {
@@ -254,14 +233,7 @@ export const isFollowing = async (followerId: string, followingId: string): Prom
   return false;
 };
 
-export interface UserStats {
-  followers: number;
-  following: number;
-  posts: number;
-  totalLikes: number;
-}
-
-export const getUserStats = async (userId: string): Promise<UserStats> => {
+export const getUserStats = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/users/${userId}/stats`);
     if (response.ok) {
@@ -275,7 +247,7 @@ export const getUserStats = async (userId: string): Promise<UserStats> => {
 
 // ==================== SEARCH & DISCOVERY ====================
 
-export const searchPosts = async (query: string, category?: string): Promise<Post[]> => {
+export const searchPosts = async (query, category) => {
   try {
     const params = new URLSearchParams();
     if (query) params.append('q', query);
@@ -296,7 +268,7 @@ export const searchPosts = async (query: string, category?: string): Promise<Pos
   // Fallback to mock database
   const { posts } = getDb();
   // Handle both boolean true and truthy values for published
-  let filtered = posts.filter((p: Post) => p.published === true || p.published === 1 || p.published === 'true');
+  let filtered = posts.filter((p) => p.published === true || p.published === 1 || p.published === 'true');
   
   // If no published posts, use all posts
   if (filtered.length === 0) {
@@ -305,7 +277,7 @@ export const searchPosts = async (query: string, category?: string): Promise<Pos
   
   if (query) {
     const q = query.toLowerCase();
-    filtered = filtered.filter((p: Post) => 
+    filtered = filtered.filter((p) => 
       p.title.toLowerCase().includes(q) || 
       p.content.toLowerCase().includes(q) ||
       p.authorName.toLowerCase().includes(q)
@@ -313,13 +285,13 @@ export const searchPosts = async (query: string, category?: string): Promise<Pos
   }
   
   if (category && category !== 'All') {
-    filtered = filtered.filter((p: Post) => p.category === category);
+    filtered = filtered.filter((p) => p.category === category);
   }
   
   return filtered;
 };
 
-export const getCategories = async (): Promise<string[]> => {
+export const getCategories = async () => {
   try {
     const response = await fetch(`${API_URL}/categories`);
     const contentType = response.headers.get('content-type');
@@ -336,11 +308,11 @@ export const getCategories = async (): Promise<string[]> => {
   // Fallback to mock database
   const { posts } = getDb();
   // Get categories from all posts (since published might be various types)
-  const categories = [...new Set(posts.map((p: Post) => p.category).filter(Boolean))];
+  const categories = [...new Set(posts.map((p) => p.category).filter(Boolean))];
   return categories.length > 0 ? categories : ['Technology', 'Lifestyle', 'Philosophy'];
 };
 
-export const getFeed = async (userId: string): Promise<Post[]> => {
+export const getFeed = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/feed/${userId}`);
     const contentType = response.headers.get('content-type');
@@ -354,10 +326,10 @@ export const getFeed = async (userId: string): Promise<Post[]> => {
   
   // Fallback to mock database - return all published posts
   const { posts } = getDb();
-  return posts.filter((p: Post) => p.published === true);
+  return posts.filter((p) => p.published === true);
 };
 
-export const getAllAuthors = async (): Promise<Author[]> => {
+export const getAllAuthors = async () => {
   try {
     const response = await fetch(`${API_URL}/authors`);
     const contentType = response.headers.get('content-type');
@@ -374,14 +346,16 @@ export const getAllAuthors = async (): Promise<Author[]> => {
   // Fallback to mock database
   const { users, posts } = getDb();
   return users
-    .filter((u: any) => u.role === 'AUTHOR' || u.role === 'ADMIN')
-    .map((u: any) => ({
+    .filter((u) => u.role === 'AUTHOR' || u.role === 'ADMIN')
+    .map((u) => ({
       id: u.id,
       username: u.username,
       avatar: u.avatar,
       bio: u.bio || '',
       role: u.role,
-      story_count: posts.filter((p: Post) => p.authorId === u.id && p.published).length,
+      story_count: posts.filter((p) => p.authorId === u.id && p.published).length,
       follower_count: 0
     }));
 };
+
+

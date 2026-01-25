@@ -5,11 +5,7 @@ import { User, UserRole } from '../types';
 import { createPost, updatePost, getPostById } from '../services/postService';
 import { polishStoryContent, generateExcerpt } from '../services/geminiService';
 
-interface StoryEditorProps {
-  user: User | null;
-}
-
-const StoryEditor: React.FC<StoryEditorProps> = ({ user }) => {
+const StoryEditor = ({ user }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -61,7 +57,7 @@ const StoryEditor: React.FC<StoryEditorProps> = ({ user }) => {
     }
   };
 
-  const handleSave = async (isPublished: boolean) => {
+  const handleSave = async (isPublished) => {
     if (!user) return;
     setLoading(true);
 

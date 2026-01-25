@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { Post } from '../types';
 import { getAllPosts } from '../services/postService';
 
-const Home: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+const Home = () => {
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const Home: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-12 items-start">
           <div className="flex-1 text-center">
             <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-black text-indigo-600">1</div>
-            <h4 className="text-lg font-black text-slate-900 dark:text-white mb-2 transition-colors">Join as Reader</h4>
+            <h4 className="text-lg font-black text-slate-900 dark:text-white mb-2 transition-colors">Join</h4>
             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed transition-colors">Explore thousands of stories from diverse creators around the globe.</p>
           </div>
           <div className="hidden md:block w-px h-32 bg-slate-100 dark:bg-slate-800 mt-8"></div>

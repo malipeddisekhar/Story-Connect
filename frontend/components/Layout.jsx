@@ -3,15 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { User, UserRole } from '../types';
 
-interface LayoutProps {
-  children: React.ReactNode;
-  user: User | null;
-  onLogout: () => void;
-  theme: 'light' | 'dark';
-  onToggleTheme: () => void;
-}
-
-const Layout: React.FC<LayoutProps> = ({ children, user, onLogout, theme, onToggleTheme }) => {
+const Layout = ({ children, user, onLogout, theme, onToggleTheme }) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogoutClick = () => {

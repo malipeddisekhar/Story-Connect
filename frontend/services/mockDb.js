@@ -4,7 +4,7 @@ import { User, UserRole, Post } from '../types';
 const USERS_KEY = 'storyconnect_users_v2';
 const POSTS_KEY = 'storyconnect_posts_v2';
 
-const INITIAL_USERS: User[] = [
+const INITIAL_USERS = [
   {
     id: 'u1',
     username: 'admin_master',
@@ -25,7 +25,7 @@ const INITIAL_USERS: User[] = [
   }
 ];
 
-const INITIAL_POSTS: Post[] = [
+const INITIAL_POSTS = [
   {
     id: 'p1',
     title: 'The Future of Digital Narrative',
@@ -165,7 +165,7 @@ export const getDb = () => {
   return { users, posts };
 };
 
-export const saveDb = (users: User[], posts: Post[]) => {
+export const saveDb = (users, posts) => {
   localStorage.setItem(USERS_KEY, JSON.stringify(users));
   localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
 };
@@ -236,3 +236,7 @@ export const forceReinitialize = () => {
 };
 
 initDb();
+
+
+
+

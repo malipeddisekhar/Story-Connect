@@ -5,18 +5,13 @@ import { User, Post, UserRole } from '../types';
 import { getPostsByAuthor, deletePost } from '../services/postService';
 import { updateProfile } from '../services/authService';
 
-interface ProfileProps {
-  user: User | null;
-  onUserUpdate?: (user: User) => void;
-}
-
-const Profile: React.FC<ProfileProps> = ({ user: initialUser, onUserUpdate }) => {
+const Profile = ({ user: initialUser, onUserUpdate }) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(initialUser);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [user, setUser] = useState(initialUser);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
   const [editUsername, setEditUsername] = useState('');
   const [editBio, setEditBio] = useState('');
   const [editAvatar, setEditAvatar] = useState('');
@@ -25,7 +20,7 @@ const Profile: React.FC<ProfileProps> = ({ user: initialUser, onUserUpdate }) =>
   const [updateError, setUpdateError] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setUser(initialUser);
@@ -46,7 +41,7 @@ const Profile: React.FC<ProfileProps> = ({ user: initialUser, onUserUpdate }) =>
     fetchUserPosts();
   }, [user, navigate]);
 
-  const handleDelete = async (postId: string) => {
+  const handleDelete = async (postId) => {
     await deletePost(postId);
     setPosts(posts.filter(p => p.id !== postId));
     setShowDeleteConfirm(null);
@@ -64,8 +59,8 @@ const Profile: React.FC<ProfileProps> = ({ user: initialUser, onUserUpdate }) =>
     }
   };
 
-  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files && files[0];
     if (file) {
       setIsUploadingAvatar(true);
       setUpdateError('');
@@ -74,7 +69,7 @@ const Profile: React.FC<ProfileProps> = ({ user: initialUser, onUserUpdate }) =>
         // Convert to base64 for preview and storage
         const reader = new FileReader();
         reader.onloadend = () => {
-          const base64String = reader.result as string;
+          const base64String = reader.result;
           setPreviewAvatar(base64String);
           setEditAvatar(base64String);
           setIsUploadingAvatar(false);
@@ -114,7 +109,7 @@ const Profile: React.FC<ProfileProps> = ({ user: initialUser, onUserUpdate }) =>
           setShowUpdateModal(false);
           setUpdateSuccess(false);
         }, 1500);
-      } catch (error: any) {
+      } catch (error) {
         setUpdateError(error.message || 'Failed to update profile');
       } finally {
         setIsUpdating(false);

@@ -4,12 +4,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { login, register, setCurrentUser } from '../services/authService';
 import { User, UserRole } from '../types';
 
-interface AuthProps {
-  type: 'login' | 'register';
-  onAuthSuccess: (user: User, token: string) => void;
-}
-
-const Auth: React.FC<AuthProps> = ({ type, onAuthSuccess }) => {
+const Auth = ({ type, onAuthSuccess }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -32,7 +27,7 @@ const Auth: React.FC<AuthProps> = ({ type, onAuthSuccess }) => {
     setError('');
   }, [location, type]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -48,7 +43,7 @@ const Auth: React.FC<AuthProps> = ({ type, onAuthSuccess }) => {
         await register(formData.username, formData.email, formData.role, formData.password);
         navigate('/login?registered=true');
       }
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Authentication failed');
     } finally {
       setLoading(false);
@@ -104,7 +99,7 @@ const Auth: React.FC<AuthProps> = ({ type, onAuthSuccess }) => {
                 <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-2">Joining as</label>
                 <select 
                   value={formData.role}
-                  onChange={(e) => setFormData({...formData, role: e.target.value as UserRole})}
+                  onChange={(e) => setFormData({...formData, role: e.target.valueRole})}
                   autoComplete="off"
                   className="w-full px-6 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-semibold border-2 border-slate-200 dark:border-slate-700 focus:border-indigo-500 outline-none transition-all cursor-pointer"
                 >

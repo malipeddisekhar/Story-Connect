@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import { User, Post, UserRole } from '../types';
 import { getDb, saveDb } from '../services/mockDb';
 
-const AdminDashboard: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [activeTab, setActiveTab] = useState<'users' | 'posts'>('users');
+const AdminDashboard = () => {
+  const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [activeTab, setActiveTab] = useState('users');
 
   useEffect(() => {
     const { users: u, posts: p } = getDb();
@@ -15,7 +15,7 @@ const AdminDashboard: React.FC = () => {
     setPosts(p);
   }, []);
 
-  const handleDeleteUser = (id: string) => {
+  const handleDeleteUser = (id) => {
     if (confirm('Permanently delete this user account? This cannot be undone.')) {
       const updated = users.filter(u => u.id !== id);
       setUsers(updated);
@@ -23,7 +23,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleDeletePost = (id: string) => {
+  const handleDeletePost = (id) => {
     if (confirm('Permanently remove this story from the platform?')) {
       const updated = posts.filter(p => p.id !== id);
       setPosts(updated);
@@ -31,7 +31,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const setRole = (id: string, newRole: UserRole) => {
+  const setRole = (id, newRole) => {
     const updated = users.map(u => {
       if (u.id === id) return { ...u, role: newRole };
       return u;
@@ -40,7 +40,7 @@ const AdminDashboard: React.FC = () => {
     saveDb(updated, posts);
   };
 
-  const togglePostVisibility = (id: string) => {
+  const togglePostVisibility = (id) => {
     const updated = posts.map(p => {
       if (p.id === id) return { ...p, published: !p.published };
       return p;

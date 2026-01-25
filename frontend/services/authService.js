@@ -6,7 +6,7 @@ import { getDb, saveDb } from './mockDb';
 const API_URL = import.meta.env.VITE_API_URL || 'https://storyconnect-backend.onrender.com/api';
 
 // Check if backend is available
-const isBackendAvailable = async (): Promise<boolean> => {
+const isBackendAvailable = async () => {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
@@ -29,7 +29,7 @@ const isBackendAvailable = async (): Promise<boolean> => {
 };
 
 // Upload avatar to server
-export const uploadAvatar = async (file: File): Promise<string> => {
+export const uploadAvatar = async (file) => {
   try {
     const backendAvailable = await isBackendAvailable();
     if (backendAvailable) {
@@ -62,13 +62,13 @@ export const uploadAvatar = async (file: File): Promise<string> => {
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onloadend = () => {
-      resolve(reader.result as string);
+      resolve(reader.result);
     };
     reader.readAsDataURL(file);
   });
 };
 
-export const login = async (email: string, password: string): Promise<{ user: User, token: string }> => {
+export const login = async (email, password) => {
   // Try backend first
   try {
     const backendAvailable = await isBackendAvailable();
@@ -90,7 +90,7 @@ export const login = async (email: string, password: string): Promise<{ user: Us
           id: data.user.id,
           username: data.user.username,
           email: data.user.email,
-          role: data.user.role as UserRole,
+          role: data.user.roleRole,
           avatar: data.user.avatar,
           bio: data.user.bio,
           createdAt: data.user.created_at
@@ -98,7 +98,7 @@ export const login = async (email: string, password: string): Promise<{ user: Us
         token: data.token
       };
     }
-  } catch (error: any) {
+  } catch (error) {
     if (error.message !== 'Failed to fetch') {
       throw error;
     }
@@ -106,7 +106,7 @@ export const login = async (email: string, password: string): Promise<{ user: Us
 
   // Fallback to mock database
   const { users } = getDb();
-  const user = users.find((u: User) => u.email === email);
+  const user = users.find((u) => u.email === email);
   
   if (!user) throw new Error('User not found');
   
@@ -114,7 +114,7 @@ export const login = async (email: string, password: string): Promise<{ user: Us
   return { user, token };
 };
 
-export const register = async (username: string, email: string, role: UserRole, password?: string): Promise<{ user: User, token: string }> => {
+export const register = async (username, email, role, password) => {
   // Try backend first
   try {
     const backendAvailable = await isBackendAvailable();
@@ -136,7 +136,7 @@ export const register = async (username: string, email: string, role: UserRole, 
           id: data.user.id,
           username: data.user.username,
           email: data.user.email,
-          role: data.user.role as UserRole,
+          role: data.user.roleRole,
           avatar: data.user.avatar,
           bio: data.user.bio,
           createdAt: data.user.created_at
@@ -144,7 +144,7 @@ export const register = async (username: string, email: string, role: UserRole, 
         token: data.token
       };
     }
-  } catch (error: any) {
+  } catch (error) {
     if (error.message !== 'Failed to fetch') {
       throw error;
     }
@@ -152,9 +152,9 @@ export const register = async (username: string, email: string, role: UserRole, 
 
   // Fallback to mock database
   const { users, posts } = getDb();
-  if (users.find((u: User) => u.email === email)) throw new Error('Email already exists');
+  if (users.find((u) => u.email === email)) throw new Error('Email already exists');
 
-  const newUser: User = {
+  const newUser = {
     id: 'u' + (users.length + 1),
     username,
     email,
@@ -170,12 +170,12 @@ export const register = async (username: string, email: string, role: UserRole, 
   return { user: newUser, token };
 };
 
-export const getCurrentUser = (): User | null => {
+export const getCurrentUser = () => {
   // First check if we have a stored user in localStorage
   const storedUser = localStorage.getItem('currentUser');
   if (storedUser) {
     try {
-      return JSON.parse(storedUser) as User;
+      return JSON.parse(storedUser);
     } catch (e) {
       localStorage.removeItem('currentUser');
     }
@@ -187,17 +187,17 @@ export const getCurrentUser = (): User | null => {
   try {
     const payload = JSON.parse(atob(token));
     const { users } = getDb();
-    return users.find((u: User) => u.id === payload.id) || null;
+    return users.find((u) => u.id === payload.id) || null;
   } catch (e) {
     return null;
   }
 };
 
-export const setCurrentUser = (user: User): void => {
+export const setCurrentUser = (user) => {
   localStorage.setItem('currentUser', JSON.stringify(user));
 };
 
-export const updateProfile = async (userId: string, updates: { username: string; bio: string; avatar: string }): Promise<User> => {
+export const updateProfile = async (userId, updates) => {
   // Try backend first
   try {
     const backendAvailable = await isBackendAvailable();
@@ -223,11 +223,11 @@ export const updateProfile = async (userId: string, updates: { username: string;
       }
       
       const userData = await response.json();
-      const updatedUser: User = {
+      const updatedUser = {
         id: userData.id,
         username: userData.username,
         email: userData.email,
-        role: userData.role as UserRole,
+        role: userData.roleRole,
         avatar: userData.avatar,
         bio: userData.bio,
         createdAt: userData.created_at
@@ -237,7 +237,7 @@ export const updateProfile = async (userId: string, updates: { username: string;
       setCurrentUser(updatedUser);
       return updatedUser;
     }
-  } catch (error: any) {
+  } catch (error) {
     console.log('Backend not available, using localStorage');
   }
 
@@ -247,7 +247,7 @@ export const updateProfile = async (userId: string, updates: { username: string;
     throw new Error('User not found');
   }
   
-  const updatedUser: User = {
+  const updatedUser = {
     ...currentUser,
     username: updates.username,
     bio: updates.bio,
@@ -260,7 +260,7 @@ export const updateProfile = async (userId: string, updates: { username: string;
   // Also try to update mock database if user exists there
   try {
     const { users, posts } = getDb();
-    const userIndex = users.findIndex((u: User) => u.id === userId);
+    const userIndex = users.findIndex((u) => u.id === userId);
     if (userIndex !== -1) {
       users[userIndex] = updatedUser;
       saveDb(users, posts);
@@ -272,7 +272,9 @@ export const updateProfile = async (userId: string, updates: { username: string;
   return updatedUser;
 };
 
-export const clearCurrentUser = (): void => {
+export const clearCurrentUser = () => {
   localStorage.removeItem('currentUser');
   localStorage.removeItem('token');
 };
+
+

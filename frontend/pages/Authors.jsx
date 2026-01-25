@@ -3,13 +3,9 @@ import { Link } from 'react-router-dom';
 import { User } from '../types';
 import { getAllAuthors, toggleFollow, isFollowing, Author } from '../services/readerService';
 
-interface AuthorsProps {
-  user: User | null;
-}
-
-const Authors: React.FC<AuthorsProps> = ({ user }) => {
-  const [authors, setAuthors] = useState<Author[]>([]);
-  const [followingMap, setFollowingMap] = useState<Record<string, boolean>>({});
+const Authors = ({ user }) => {
+  const [authors, setAuthors] = useState([]);
+  const [followingMap, setFollowingMap] = useState>({});
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -32,7 +28,7 @@ const Authors: React.FC<AuthorsProps> = ({ user }) => {
 
   const checkFollowingStatus = async () => {
     if (!user) return;
-    const statusMap: Record<string, boolean> = {};
+    const statusMap = {};
     for (const author of authors) {
       if (author.id !== user.id) {
         statusMap[author.id] = await isFollowing(user.id, author.id);
@@ -41,7 +37,7 @@ const Authors: React.FC<AuthorsProps> = ({ user }) => {
     setFollowingMap(statusMap);
   };
 
-  const handleFollow = async (authorId: string) => {
+  const handleFollow = async (authorId) => {
     if (!user) return;
     const newStatus = await toggleFollow(user.id, authorId);
     setFollowingMap(prev => ({ ...prev, [authorId]: newStatus }));
@@ -59,7 +55,7 @@ const Authors: React.FC<AuthorsProps> = ({ user }) => {
     (author.bio && author.bio.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const AuthorCard = ({ author }: { author: Author }) => {
+  const AuthorCard = ({ author }) => {
     const isOwnProfile = user?.id === author.id;
     const isFollowingAuthor = followingMap[author.id] || false;
 

@@ -12,17 +12,13 @@ import {
   UserStats
 } from '../services/readerService';
 
-interface ReaderDashboardProps {
-  user: User;
-}
-
-const ReaderDashboard: React.FC<ReaderDashboardProps> = ({ user }) => {
-  const [activeTab, setActiveTab] = useState<'feed' | 'bookmarks' | 'history' | 'following'>('feed');
-  const [bookmarks, setBookmarks] = useState<Post[]>([]);
-  const [history, setHistory] = useState<Post[]>([]);
-  const [following, setFollowing] = useState<Author[]>([]);
-  const [feed, setFeed] = useState<Post[]>([]);
-  const [stats, setStats] = useState<UserStats>({ followers: 0, following: 0, posts: 0, totalLikes: 0 });
+const ReaderDashboard = ({ user }) => {
+  const [activeTab, setActiveTab] = useState('feed');
+  const [bookmarks, setBookmarks] = useState([]);
+  const [history, setHistory] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const [feed, setFeed] = useState([]);
+  const [stats, setStats] = useState({ followers: 0, following: 0, posts: 0, totalLikes: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -60,7 +56,7 @@ const ReaderDashboard: React.FC<ReaderDashboardProps> = ({ user }) => {
     { id: 'following', label: 'Following', icon: '👥', count: following.length },
   ];
 
-  const StoryCard = ({ post }: { post: Post }) => (
+  const StoryCard = ({ post }) => (
     <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl p-4 flex gap-4 hover:shadow-lg transition-shadow">
       <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-xl">
         <img src={post.coverImage} className="w-full h-full object-cover" alt={post.title} />
@@ -80,7 +76,7 @@ const ReaderDashboard: React.FC<ReaderDashboardProps> = ({ user }) => {
     </div>
   );
 
-  const AuthorCard = ({ author }: { author: Author }) => (
+  const AuthorCard = ({ author }) => (
     <Link 
       to={`/author/${author.id}`}
       className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl p-4 flex items-center gap-4 hover:shadow-lg transition-shadow"
@@ -157,7 +153,7 @@ const ReaderDashboard: React.FC<ReaderDashboardProps> = ({ user }) => {
           {tabs.map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-5 py-3 rounded-full font-bold text-sm whitespace-nowrap transition-all ${
                 activeTab === tab.id
                   ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-none'

@@ -4,14 +4,14 @@ import { Post } from '../types';
 import { getAllPosts } from '../services/postService';
 import { searchPosts, getCategories } from '../services/readerService';
 
-const Explore: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+const Explore = () => {
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [categories, setCategories] = useState<string[]>(['All']);
+  const [categories, setCategories] = useState(['All']);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [view, setView] = useState('grid');
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const Explore: React.FC = () => {
     return () => clearTimeout(delaySearch);
   }, [searchQuery, selectedCategory, dataLoaded]);
 
-  const StoryCardGrid = ({ post }: { post: Post }) => (
+  const StoryCardGrid = ({ post }) => (
     <Link to={`/story/${post.id}`} className="group">
       <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl overflow-hidden hover:shadow-xl transition-all">
         <div className="h-48 overflow-hidden">
@@ -87,7 +87,7 @@ const Explore: React.FC = () => {
     </Link>
   );
 
-  const StoryCardList = ({ post }: { post: Post }) => (
+  const StoryCardList = ({ post }) => (
     <Link to={`/story/${post.id}`} className="group">
       <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl p-4 flex gap-4 hover:shadow-lg transition-shadow">
         <div className="w-32 h-24 flex-shrink-0 overflow-hidden rounded-xl">

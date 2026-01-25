@@ -3,7 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 
-export const polishStoryContent = async (content: string): Promise<string> => {
+export const polishStoryContent = async (content) => {
   if (!process.env.API_KEY) return content;
 
   try {
@@ -21,7 +21,7 @@ export const polishStoryContent = async (content: string): Promise<string> => {
   }
 };
 
-export const generateExcerpt = async (content: string): Promise<string> => {
+export const generateExcerpt = async (content) => {
   if (!process.env.API_KEY) return content.substring(0, 150) + "...";
 
   try {
@@ -35,3 +35,5 @@ export const generateExcerpt = async (content: string): Promise<string> => {
     return content.substring(0, 150) + "...";
   }
 };
+
+

@@ -6,7 +6,7 @@ import { getDb, saveDb } from './mockDb';
 const API_URL = import.meta.env.VITE_API_URL || 'https://storyconnect-backend.onrender.com/api';
 
 // Check if backend is available
-const isBackendAvailable = async (): Promise<boolean> => {
+const isBackendAvailable = async () => {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2000);
@@ -29,7 +29,7 @@ const isBackendAvailable = async (): Promise<boolean> => {
 };
 
 // Helper to convert API response to Post format
-const mapPost = (data: any): Post => ({
+const mapPost = (data) => ({
   id: data.id,
   title: data.title,
   excerpt: data.excerpt,
@@ -44,7 +44,7 @@ const mapPost = (data: any): Post => ({
   readTime: data.read_time || data.readTime
 });
 
-export const getAllPosts = async (): Promise<Post[]> => {
+export const getAllPosts = async () => {
   // Try backend first
   try {
     const backendAvailable = await isBackendAvailable();
@@ -66,7 +66,7 @@ export const getAllPosts = async (): Promise<Post[]> => {
   // Always fallback to mock database
   const { posts } = getDb();
   // Filter for published posts (handle both boolean and truthy values)
-  const publishedPosts = posts.filter((p: Post) => p.published === true || p.published === 1 || p.published === 'true');
+  const publishedPosts = posts.filter((p) => p.published === true || p.published === 1 || p.published === 'true');
   console.log('Returning mock posts:', publishedPosts.length);
   
   // If still no posts, return all posts from mock
@@ -78,7 +78,7 @@ export const getAllPosts = async (): Promise<Post[]> => {
   return publishedPosts;
 };
 
-export const getAdminPosts = async (): Promise<Post[]> => {
+export const getAdminPosts = async () => {
   try {
     const backendAvailable = await isBackendAvailable();
     if (backendAvailable) {
@@ -97,7 +97,7 @@ export const getAdminPosts = async (): Promise<Post[]> => {
   return posts;
 };
 
-export const getPostsByAuthor = async (authorId: string): Promise<Post[]> => {
+export const getPostsByAuthor = async (authorId) => {
   try {
     const backendAvailable = await isBackendAvailable();
     if (backendAvailable) {
@@ -113,10 +113,10 @@ export const getPostsByAuthor = async (authorId: string): Promise<Post[]> => {
   }
   
   const { posts } = getDb();
-  return posts.filter((p: Post) => p.authorId === authorId);
+  return posts.filter((p) => p.authorId === authorId);
 };
 
-export const getPostById = async (id: string): Promise<Post | undefined> => {
+export const getPostById = async (id) => {
   try {
     const backendAvailable = await isBackendAvailable();
     if (backendAvailable) {
@@ -132,10 +132,10 @@ export const getPostById = async (id: string): Promise<Post | undefined> => {
   }
   
   const { posts } = getDb();
-  return posts.find((p: Post) => p.id === id);
+  return posts.find((p) => p.id === id);
 };
 
-export const createPost = async (postData: Partial<Post>): Promise<Post> => {
+export const createPost = async (postData) => {
   try {
     const backendAvailable = await isBackendAvailable();
     if (backendAvailable) {
@@ -165,7 +165,7 @@ export const createPost = async (postData: Partial<Post>): Promise<Post> => {
   }
   
   const { users, posts } = getDb();
-  const newPost: Post = {
+  const newPost = {
     id: 'p' + Date.now(),
     title: postData.title || 'Untitled',
     excerpt: postData.excerpt || '',
@@ -185,7 +185,7 @@ export const createPost = async (postData: Partial<Post>): Promise<Post> => {
   return newPost;
 };
 
-export const updatePost = async (id: string, postData: Partial<Post>): Promise<Post> => {
+export const updatePost = async (id, postData) => {
   try {
     const backendAvailable = await isBackendAvailable();
     if (backendAvailable) {
@@ -213,7 +213,7 @@ export const updatePost = async (id: string, postData: Partial<Post>): Promise<P
   }
   
   const { users, posts } = getDb();
-  const index = posts.findIndex((p: Post) => p.id === id);
+  const index = posts.findIndex((p) => p.id === id);
   if (index === -1) throw new Error('Post not found');
 
   const updatedPost = { 
@@ -227,7 +227,7 @@ export const updatePost = async (id: string, postData: Partial<Post>): Promise<P
   return updatedPost;
 };
 
-export const deletePost = async (id: string): Promise<void> => {
+export const deletePost = async (id) => {
   try {
     const backendAvailable = await isBackendAvailable();
     if (backendAvailable) {
@@ -244,6 +244,8 @@ export const deletePost = async (id: string): Promise<void> => {
   }
   
   const { users, posts } = getDb();
-  const updatedPosts = posts.filter((p: Post) => p.id !== id);
+  const updatedPosts = posts.filter((p) => p.id !== id);
   saveDb(users, updatedPosts);
 };
+
+

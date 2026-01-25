@@ -4,15 +4,11 @@ import { User, Post } from '../types';
 import { getPostsByAuthor } from '../services/postService';
 import { toggleFollow, isFollowing, getUserStats, UserStats } from '../services/readerService';
 
-interface AuthorProfileProps {
-  user: User | null;
-}
-
-const AuthorProfile: React.FC<AuthorProfileProps> = ({ user }) => {
-  const { authorId } = useParams<{ authorId: string }>();
-  const [author, setAuthor] = useState<any>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [stats, setStats] = useState<UserStats>({ followers: 0, following: 0, posts: 0, totalLikes: 0 });
+const AuthorProfile = ({ user }) => {
+  const { authorId } = useParams();
+  const [author, setAuthor] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [stats, setStats] = useState({ followers: 0, following: 0, posts: 0, totalLikes: 0 });
   const [isFollowingAuthor, setIsFollowingAuthor] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +44,7 @@ const AuthorProfile: React.FC<AuthorProfileProps> = ({ user }) => {
         // Fetch author from API
         const response = await fetch(`http://localhost:5000/api/users`);
         const users = await response.json();
-        const authorData = users.find((u: any) => u.id === authorId);
+        const authorData = users.find((u) => u.id === authorId);
         if (authorData) {
           setAuthor(authorData);
         }

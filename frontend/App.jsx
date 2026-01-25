@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import StoryView from './pages/StoryView';
@@ -15,11 +15,11 @@ import AuthorProfile from './pages/AuthorProfile';
 import { User, UserRole } from './types';
 import { getCurrentUser, setCurrentUser, clearCurrentUser } from './services/authService';
 
-const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
+const App = () => {
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    return (localStorage.getItem('theme') as 'light' | 'dark') || 'light';
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
   });
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const App: React.FC = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
-  const handleAuthSuccess = (userData: User, token: string) => {
+  const handleAuthSuccess = (userData, token) => {
     setUser(userData);
     setCurrentUser(userData);
     localStorage.setItem('token', token);
