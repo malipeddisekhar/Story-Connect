@@ -7,7 +7,6 @@ _A modern full-stack storytelling platform built with React, Express & PostgreSQ
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 🔗 **Live Demo:** https://storyconnect-frontend.onrender.com  
-🎥 **Video Demo:** [Watch Demo](https://your-demo-link.com)  
 📩 **Contact:** malipeddisekhar63@gmail.com  
 📍 **Location:** Srikakulam District, Muddada village  
 ⏱️ **Support Response:** Within 24 hours  
@@ -21,12 +20,6 @@ _A modern full-stack storytelling platform built with React, Express & PostgreSQ
 
 Use these credentials to explore different user roles:
 
-### 👑 Admin Account
-```
-Email: admin@storyconnect.com
-Password: admin123
-Role: ADMIN
-```
 **Permissions:** Full platform access, user management, content moderation, role assignments
 
 ### ✍️ Author Account
