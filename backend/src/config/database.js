@@ -5,26 +5,52 @@ const isProduction = !!process.env.DATABASE_URL;
 if (isProduction) {
   // Production: Use PostgreSQL on Render
   const { Pool } = require('pg');
-  pool = new Pool({
+  const pgPool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
   });
   
   console.log('📦 Using PostgreSQL (Production)');
   
-  // Wrapper to convert MySQL-style queries to PostgreSQL
-  const originalQuery = pool.query.bind(pool);
-  pool.query = function(sql, params) {
-    // Convert ? placeholders to $1, $2, $3...
-    let paramIndex = 0;
-    const convertedSql = sql.replace(/\?/g, () => `$${++paramIndex}`);
-    return originalQuery(convertedSql, params);
+  // Wrapper to make PostgreSQL work like MySQL2
+  pool = {
+    query: async function(sql, params) {
+      // Convert ? placeholders to $1, $2, $3...
+      let paramIndex = 0;
+      const convertedSql = sql.replace(/\?/g, () => `$${++paramIndex}`);
+      
+      try {
+        const result = await pgPool.query(convertedSql, params);
+        // Return in MySQL format: [rows, fields]
+        return [result.rows, result.fields];
+      } catch (err) {
+        console.error('Query error:', err.message);
+        console.error('SQL:', convertedSql);
+        console.error('Params:', params);
+        throw err;
+      }
+    },
+    getConnection: async function() {
+      const client = await pgPool.connect();
+      return {
+        query: async function(sql, params) {
+          let paramIndex = 0;
+          const convertedSql = sql.replace(/\?/g, () => `$${++paramIndex}`);
+          const result = await client.query(convertedSql, params);
+          return [result.rows, result.fields];
+        },
+        release: () => client.release(),
+        beginTransaction: () => client.query('BEGIN'),
+        commit: () => client.query('COMMIT'),
+        rollback: () => client.query('ROLLBACK')
+      };
+    }
   };
   
   // Test connection
   (async () => {
     try {
-      const client = await pool.connect();
+      const client = await pgPool.connect();
       console.log('✅ PostgreSQL Database connected successfully');
       client.release();
     } catch (err) {
