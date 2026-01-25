@@ -1,23 +1,59 @@
 # 🌍 StoryConnect  
-_A modern storytelling platform built with React, Express & MySQL_
+_A modern full-stack storytelling platform built with React, Express & PostgreSQL_
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-19.2.3-blue.svg)](https://reactjs.org/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)](https://www.mysql.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-blue.svg)](https://www.postgresql.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-🔗 **Live Demo:** https://storyconnect-frontend.onrender.com/#/  
+🔗 **Live Demo:** https://storyconnect-frontend.onrender.com  
+🎥 **Video Demo:** [Watch Demo](https://your-demo-link.com)  
 📩 **Contact:** malipeddisekhar63@gmail.com  
 📍 **Location:** Srikakulam District, Muddada village  
-⏱️ **Support Response:** Within 24 hours
+⏱️ **Support Response:** Within 24 hours  
+👨‍💻 **Developer:** Malipeddi Sekhar  
+🔗 **LinkedIn:** [linkedin.com/in/malipeddi-sekhar-08650630b](https://www.linkedin.com/in/malipeddi-sekhar-08650630b/)  
+💻 **GitHub:** [github.com/malipeddisekhar](https://github.com/malipeddisekhar)
+
+---
+
+## 🎭 Test Login Credentials
+
+Use these credentials to explore different user roles:
+
+### 👑 Admin Account
+```
+Email: admin@storyconnect.com
+Password: admin123
+Role: ADMIN
+```
+**Permissions:** Full platform access, user management, content moderation, role assignments
+
+### ✍️ Author Account
+```
+Email: author@storyconnect.com
+Password: author123
+Role: AUTHOR
+```
+**Permissions:** Create/edit/delete stories, view analytics, interact with readers
+
+### 📖 Reader Account
+```
+Email: reader@storyconnect.com
+Password: reader123
+Role: READER
+```
+**Permissions:** Read stories, like/comment/bookmark, follow authors, manage reading history
 
 ---
 
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
+- [Test Login Credentials](#-test-login-credentials)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -27,6 +63,7 @@ _A modern storytelling platform built with React, Express & MySQL_
 - [API Documentation](#-api-documentation)
 - [Environment Variables](#-environment-variables)
 - [Deployment](#-deployment)
+- [Features Walkthrough](#-features-walkthrough)
 - [Screenshots](#-screenshots)
 - [Contributing](#-contributing)
 - [License](#-license)
@@ -36,23 +73,39 @@ _A modern storytelling platform built with React, Express & MySQL_
 
 ## 🎯 Overview
 
-**StoryConnect** is a full-stack web application that provides a platform for creative writers to share their stories and for readers to discover engaging content. The platform features role-based access control with three distinct user types: Readers, Authors, and Admins.
+**StoryConnect** is a comprehensive full-stack web application that empowers creative writers to share their stories and enables readers to discover engaging content. Built with modern technologies and best practices, it features role-based access control, AI-powered content enhancement, and a seamless user experience.
 
-### Why StoryConnect?
+### 🎪 Project Highlights
+
+**StoryConnect** was developed as a complete MERN stack application showcasing:
+
+- **Full-Stack Development**: React frontend with Express.js backend
+- **Database Design**: PostgreSQL with optimized schema and relationships
+- **Authentication & Security**: JWT tokens, bcrypt encryption, protected routes
+- **AI Integration**: Google Gemini AI for content enhancement
+- **Cloud Deployment**: Deployed on Render with auto-deploy from GitHub
+- **Responsive Design**: Mobile-first approach with dark/light themes
+- **Real-time Features**: Live updates, notifications, and interactions
+
+### 🎯 Why StoryConnect?
 
 - **For Readers:** Discover compelling stories, build reading lists, and engage with authors
-- **For Authors:** Share your creativity, build an audience, and get AI-powered writing suggestions
+- **For Authors:** Share your creativity, build an audience, and get AI-powered writing assistance
 - **For Admins:** Manage content, moderate users, and maintain platform quality
 - **For Developers:** Clean architecture, well-documented code, and modern tech stack
 
-### Key Highlights
+### 🌟 Key Features at a Glance
 
-✨ **Modern UI/UX** - Clean, responsive design with dark/light theme support  
+✨ **Modern UI/UX** - Clean, responsive design with TailwindCSS  
 🔐 **Secure Authentication** - JWT-based auth with bcrypt password hashing  
 🤖 **AI-Powered** - Google Gemini AI integration for story enhancement  
-📱 **Responsive Design** - Works seamlessly on desktop, tablet, and mobile  
+📱 **Fully Responsive** - Works seamlessly on desktop, tablet, and mobile  
 ⚡ **Real-time Updates** - Dynamic content with instant feedback  
-🎨 **Rich Editor** - Full-featured story editor with formatting options
+🎨 **Rich Editor** - Full-featured story editor with formatting options  
+🌙 **Dark/Light Mode** - User preference-based theme switching  
+📊 **Analytics Dashboard** - Track story performance and engagement  
+💬 **Social Features** - Like, comment, bookmark, follow functionality  
+🔍 **Advanced Search** - Filter and discover content easily
 
 ---
 
@@ -134,33 +187,99 @@ _A modern storytelling platform built with React, Express & MySQL_
 ### Frontend
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| **React** | 19.2.3 | UI Framework |
-| **React Router DOM** | 7.12.0 | Client-side routing |
-| **Vite** | 6.2.0 | Build tool & dev server |
-| **Google Gemini AI** | 1.35.0 | AI writing suggestions |
-| **CSS3** | - | Styling (Tailwind-inspired inline) |
+| **React** | 19.2.3 | UI Framework - Component-based architecture |
+| **React Router DOM** | 7.12.0 | Client-side routing and navigation |
+| **Vite** | 6.2.0 | Build tool & dev server (Fast HMR) |
+| **TailwindCSS** | - | Utility-first CSS framework |
+| **Google Gemini AI** | 1.35.0 | AI-powered writing suggestions |
 
 ### Backend
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| **Node.js** | 16+ | Runtime environment |
-| **Express.js** | 4.18.2 | Web framework |
-| **MySQL2** | 3.16.1 | Database driver |
-| **JWT** | 9.0.2 | Authentication tokens |
-| **bcryptjs** | 2.4.3 | Password hashing |
-| **Multer** | 1.4.5 | File uploads |
-| **CORS** | 2.8.5 | Cross-origin requests |
-| **dotenv** | 17.2.3 | Environment variables |
+| **Node.js** | 18+ | JavaScript runtime environment |
+| **Express.js** | 4.18.2 | Web application framework |
+| **PostgreSQL** | Latest | Production database (Render) |
+| **MySQL2** | 3.16.1 | Development database driver |
+| **JWT** | 9.0.2 | JSON Web Tokens for authentication |
+| **bcryptjs** | 2.4.3 | Password encryption and hashing |
+| **Multer** | 1.4.5 | Multipart/form-data file uploads |
+| **CORS** | 2.8.5 | Cross-Origin Resource Sharing |
+| **dotenv** | 17.2.3 | Environment variable management |
 
 ### Database
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **MySQL** | 8.0+ | Relational database |
+| Technology | Purpose |
+|------------|---------|
+| **PostgreSQL** | Production database (Cloud - Render) |
+| **MySQL 8.0** | Local development database |
+
+### Deployment & DevOps
+| Platform | Purpose |
+|----------|---------|
+| **Render** | Cloud hosting (Frontend + Backend + Database) |
+| **GitHub** | Version control and CI/CD |
+| **Auto Deploy** | Automatic deployment on git push |
 
 ### Development Tools
-- **nodemon** - Auto-restart server
-- **ESLint** - Code linting
-- **Git** - Version control
+- **nodemon** - Auto-restart server on file changes
+- **ESLint** - JavaScript code linting
+- **Git** - Version control system
+- **VS Code** - Recommended IDE
+
+---
+
+## 🏗️ Architecture
+
+### System Architecture
+```
+┌─────────────────┐      HTTPS      ┌──────────────────┐      SQL      ┌──────────────┐
+│                 │ ◄──────────────► │                  │ ◄───────────► │              │
+│  React Frontend │                  │  Express Backend │               │  PostgreSQL  │
+│   (Render SPA)  │                  │  (Render Service)│               │   Database   │
+│                 │                  │                  │               │   (Render)   │
+└─────────────────┘                  └──────────────────┘               └──────────────┘
+        │                                     │
+        │                                     │
+        ▼                                     ▼
+┌─────────────────┐                  ┌──────────────────┐
+│  Static Assets  │                  │   Gemini AI API  │
+│   (Images, CSS) │                  │  (Content Gen.)  │
+└─────────────────┘                  └──────────────────┘
+```
+
+### Database Schema
+```
+users ──┬──< posts
+        ├──< comments
+        ├──< likes
+        ├──< bookmarks
+        ├──< reading_history
+        └──< follows (self-referencing)
+
+contact_submissions (independent table)
+```
+
+### Key Features Flow
+
+**Authentication Flow:**
+```
+User Input → Frontend Validation → API Call → Backend Validation 
+→ Password Hash/Compare → JWT Generation → Store in LocalStorage 
+→ Authenticated Routes
+```
+
+**Story Creation Flow:**
+```
+Author Dashboard → Story Editor → AI Suggestions (Optional) 
+→ Add Cover Image → Set Category → Save as Draft/Publish 
+→ Database Storage → Display in Feed
+```
+
+**Social Interaction Flow:**
+```
+Reader Views Story → Like/Comment/Bookmark Actions 
+→ API Request → Update Database → Real-time UI Update 
+→ Notification to Author
+```
 
 ---
 
