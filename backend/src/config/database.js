@@ -1,7 +1,8 @@
 // Support both MySQL (local) and PostgreSQL (production)
 let pool;
+const isProduction = !!process.env.DATABASE_URL;
 
-if (process.env.DATABASE_URL) {
+if (isProduction) {
   // Production: Use PostgreSQL on Render
   const { Pool } = require('pg');
   pool = new Pool({
@@ -10,6 +11,15 @@ if (process.env.DATABASE_URL) {
   });
   
   console.log('📦 Using PostgreSQL (Production)');
+  
+  // Wrapper to convert MySQL-style queries to PostgreSQL
+  const originalQuery = pool.query.bind(pool);
+  pool.query = function(sql, params) {
+    // Convert ? placeholders to $1, $2, $3...
+    let paramIndex = 0;
+    const convertedSql = sql.replace(/\?/g, () => `$${++paramIndex}`);
+    return originalQuery(convertedSql, params);
+  };
   
   // Test connection
   (async () => {
