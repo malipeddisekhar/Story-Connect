@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { UserRole } from '../types';
 import { getPostById, deletePost } from '../services/postService';
 import { getCurrentUser } from '../services/authService';
 import { 

@@ -193,9 +193,9 @@ const Layout = ({ children, user, onLogout, theme, onToggleTheme }) => {
         {children}
       </main>
 
-      <footer className="bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 py-12 transition-colors duration-300">
+      <footer className="bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 py-8 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
             {/* Brand Section */}
             <div className="text-center md:text-left">
               <p className="text-2xl font-bold text-indigo-600 mb-4">StoryConnect</p>
@@ -251,15 +251,13 @@ const Layout = ({ children, user, onLogout, theme, onToggleTheme }) => {
             </div>
           </div>
 
-          <div className="border-t border-gray-100 dark:border-slate-800 pt-6 text-center">
+          <div className="border-t border-gray-100 dark:border-slate-800 pt-4 text-center">
             <p className="text-xs text-slate-400 dark:text-slate-500 transition-colors">
               &copy; {new Date().getFullYear()} StoryConnect. Developed with ❤️ by Malipeddi Sekhar. All rights reserved.
             </p>
           </div>
         </div>
       </footer>
-
-      {/* Logout Confirmation Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 transform transition-all">
