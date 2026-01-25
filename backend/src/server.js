@@ -61,8 +61,7 @@ app.post('/api/upload/avatar', upload.single('avatar'), async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     
-    // Cloudinary automatically returns the URL in req.file.path
-    const avatarUrl = req.file.path;
+    const avatarUrl = `${process.env.BACKEND_URL || 'http://localhost:5000'}/uploads/avatars/${req.file.filename}`;
     res.json({ url: avatarUrl, filename: req.file.filename });
   } catch (error) {
     console.error('Avatar upload error:', error);
