@@ -21,6 +21,8 @@ if (GROQ_API_KEY) {
   console.log('- Groq Key Preview:', GROQ_API_KEY.substring(0, 10) + '...');
 }
 
+export const isAiAvailable = () => !!(GROQ_API_KEY || HUGGINGFACE_API_KEY);
+
 export const generateContentFromTitle = async (title, category = 'General') => {
   console.log('🔍 Starting AI generation for title:', title, 'category:', category);
   console.log('🔑 Available APIs:', { 
@@ -41,8 +43,7 @@ export const generateContentFromTitle = async (title, category = 'General') => {
   }
   
   console.error('❌ No AI API key configured');
-  alert('No AI API key found. Please check your .env file has VITE_GROQ_API_KEY.');
-  return '';
+  throw new Error('NO_API_KEY');
 };
 
 // Hugging Face Implementation

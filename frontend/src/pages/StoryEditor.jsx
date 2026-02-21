@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createPost, updatePost, getPostById } from '../services/postService';
-import { polishStoryContent, generateExcerpt, generateContentFromTitle } from '../services/geminiService';
+import { polishStoryContent, generateExcerpt, generateContentFromTitle, isAiAvailable } from '../services/geminiService';
 import { UserRole } from '../types';
 
 const StoryEditor = ({ user }) => {
@@ -10,6 +10,12 @@ const StoryEditor = ({ user }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
+  const [toast, setToast] = useState({ message: '', type: '' });
+
+  const showToast = (message, type = 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast({ message: '', type: '' }), 4000);
+  };
   
   const [formData, setFormData] = useState({
     title: '',
@@ -47,26 +53,29 @@ const StoryEditor = ({ user }) => {
   }, [id, user, navigate]);
 
   const handleAiPolish = async () => {
+    if (!isAiAvailable()) {
+      showToast('AI features require a GROQ API key. Configure VITE_GROQ_API_KEY in your environment.', 'warning');
+      return;
+    }
     if (!formData.title.trim()) {
-      alert('Please enter a title first!');
+      showToast('Please enter a title first!', 'warning');
       return;
     }
     
     setAiLoading(true);
     try {
-      // If content is empty or very short (less than 50 characters), generate new content
       if (!formData.content.trim() || formData.content.trim().length < 50) {
-        // Generate new content from title
         const generatedContent = await generateContentFromTitle(formData.title, formData.category);
         setFormData({ ...formData, content: generatedContent });
+        showToast('Content generated successfully!', 'success');
       } else {
-        // Polish existing content
         const improved = await polishStoryContent(formData.content);
         setFormData({ ...formData, content: improved });
+        showToast('Content polished successfully!', 'success');
       }
     } catch (error) {
       console.error('AI Polish Error:', error);
-      alert('Failed to process with AI. Please try again.');
+      showToast('AI service unavailable. Please try again later.', 'error');
     } finally {
       setAiLoading(false);
     }
@@ -74,17 +83,17 @@ const StoryEditor = ({ user }) => {
 
   const handleSave = async (isPublished) => {
     if (!user) {
-      alert('You must be logged in to save a story!');
+      showToast('You must be logged in to save a story!', 'error');
       return;
     }
 
     if (!formData.title.trim()) {
-      alert('Please enter a title for your story!');
+      showToast('Please enter a title for your story!', 'warning');
       return;
     }
 
     if (!formData.content.trim()) {
-      alert('Please add some content to your story!');
+      showToast('Please add some content to your story!', 'warning');
       return;
     }
 
@@ -109,18 +118,14 @@ const StoryEditor = ({ user }) => {
       }
       
       if (result) {
-        if (isPublished) {
-          alert('🎉 Story published successfully!');
-        } else {
-          alert('📝 Draft saved successfully!');
-        }
-        navigate('/profile');
+        showToast(isPublished ? '🎉 Story published successfully!' : '📝 Draft saved!', 'success');
+        setTimeout(() => navigate('/profile'), 1500);
       } else {
         throw new Error('Failed to save story');
       }
     } catch (error) {
       console.error('Save error:', error);
-      alert('Failed to save story. Please check your connection and try again.');
+      showToast('Failed to save story. Please check your connection.', 'error');
     } finally {
       setLoading(false);
     }
@@ -128,6 +133,17 @@ const StoryEditor = ({ user }) => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
+      {/* Toast Notification */}
+      {toast.message && (
+        <div className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-2xl shadow-xl font-bold text-sm flex items-center gap-3 transition-all ${
+          toast.type === 'success' ? 'bg-emerald-600 text-white' :
+          toast.type === 'warning' ? 'bg-amber-500 text-white' :
+          'bg-red-600 text-white'
+        }`}>
+          <span>{toast.type === 'success' ? '✅' : toast.type === 'warning' ? '⚠️' : '❌'}</span>
+          {toast.message}
+        </div>
+      )}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
         <div>
           <h1 className="text-4xl font-black text-slate-900 dark:text-white transition-colors">
@@ -138,9 +154,14 @@ const StoryEditor = ({ user }) => {
           type="button"
           onClick={handleAiPolish}
           disabled={aiLoading}
-          className="flex items-center gap-2 px-6 py-2.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-2xl text-sm font-black hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-all border border-indigo-100 dark:border-indigo-800 disabled:opacity-50"
+          title={!isAiAvailable() ? 'AI not configured (VITE_GROQ_API_KEY missing)' : 'AI Polish your content'}
+          className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-black transition-all border disabled:opacity-50 ${
+            isAiAvailable()
+              ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 border-indigo-100 dark:border-indigo-800'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700 cursor-not-allowed'
+          }`}
         >
-          {aiLoading ? '✨ Editing...' : '✨ AI Polish'}
+          {aiLoading ? '✨ Editing...' : isAiAvailable() ? '✨ AI Polish' : '✨ AI Polish (Unavailable)'}
         </button>
       </div>
 
