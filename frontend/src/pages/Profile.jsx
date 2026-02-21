@@ -33,9 +33,17 @@ const Profile = ({ user: initialUser, onUserUpdate }) => {
     }
 
     const fetchUserPosts = async () => {
-      const data = await getPostsByAuthor(user.id);
-      setPosts(data);
-      setLoading(false);
+      setLoading(true);
+      try {
+        const data = await getPostsByAuthor(user.id);
+        console.log('📊 Fetched posts for user:', user.id, data);
+        setPosts(data || []);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        setPosts([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchUserPosts();

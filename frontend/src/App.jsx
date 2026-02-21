@@ -51,10 +51,6 @@ const App = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  };
-
   const handleAuthSuccess = (userData, token) => {
     setUser(userData);
     setCurrentUser(userData);
@@ -70,7 +66,7 @@ const App = () => {
 
   return (
     <HashRouter>
-      <Layout user={user} onLogout={handleLogout} theme={theme} onToggleTheme={toggleTheme}>
+      <Layout user={user} onLogout={handleLogout}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/story/:id" element={<StoryView />} />

@@ -38,7 +38,14 @@ const Auth = ({ type, onAuthSuccess }) => {
         const res = await login(formData.email, formData.password);
         setCurrentUser(res.user); // Store user in localStorage
         onAuthSuccess(res.user, res.token);
-        navigate('/');
+        // Role-based redirect
+        if (res.user.role === UserRole.ADMIN) {
+          navigate('/admin');
+        } else if (res.user.role === UserRole.AUTHOR) {
+          navigate('/profile');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         await register(formData.username, formData.email, formData.role, formData.password);
         navigate('/login?registered=true');

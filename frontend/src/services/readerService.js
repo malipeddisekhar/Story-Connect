@@ -358,6 +358,29 @@ export const getAllAuthors = async () => {
     }));
 };
 
+export const readerService = {
+  getBookmarks,
+  toggleBookmark,
+  isBookmarked,
+  getReadingHistory,
+  addToHistory,
+  clearHistory,
+  toggleLike,
+  getLikeCount,
+  isLiked,
+  getComments,
+  addComment,
+  getFollowing,
+  getFollowers,
+  toggleFollow,
+  isFollowing,
+  getUserStats,
+  searchPosts,
+  getCategories,
+  getFeed,
+  getAllAuthors,
+};
+
 
 
 

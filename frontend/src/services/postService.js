@@ -113,7 +113,9 @@ export const getPostsByAuthor = async (authorId) => {
   }
   
   const { posts } = getDb();
-  return posts.filter((p) => p.authorId === authorId);
+  const authorPosts = posts.filter((p) => p.authorId === authorId);
+  console.log('📊 Found posts for author', authorId, ':', authorPosts);
+  return authorPosts;
 };
 
 export const getPostById = async (id) => {
@@ -247,6 +249,17 @@ export const deletePost = async (id) => {
   const updatedPosts = posts.filter((p) => p.id !== id);
   saveDb(users, updatedPosts);
 };
+
+export const postService = {
+  getAllPosts,
+  getAdminPosts,
+  getPostsByAuthor,
+  getPostById,
+  createPost,
+  updatePost,
+  deletePost,
+};
+
 
 
 

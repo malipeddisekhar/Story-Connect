@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://storyconnect-backend.onrender.com/api';
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -19,7 +21,7 @@ const Contact = () => {
     setSuccess(false);
 
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
+      const response = await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

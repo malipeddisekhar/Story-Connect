@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createPost, updatePost, getPostById } from '../services/postService';
-import { polishStoryContent, generateExcerpt } from '../services/geminiService';
+import { polishStoryContent, generateExcerpt, generateContentFromTitle } from '../services/geminiService';
 import { UserRole } from '../types';
 
 const StoryEditor = ({ user }) => {
@@ -47,18 +47,47 @@ const StoryEditor = ({ user }) => {
   }, [id, user, navigate]);
 
   const handleAiPolish = async () => {
-    if (!formData.content) return;
+    if (!formData.title.trim()) {
+      alert('Please enter a title first!');
+      return;
+    }
+    
     setAiLoading(true);
     try {
-      const improved = await polishStoryContent(formData.content);
-      setFormData({ ...formData, content: improved });
+      // If content is empty or very short (less than 50 characters), generate new content
+      if (!formData.content.trim() || formData.content.trim().length < 50) {
+        // Generate new content from title
+        const generatedContent = await generateContentFromTitle(formData.title, formData.category);
+        setFormData({ ...formData, content: generatedContent });
+      } else {
+        // Polish existing content
+        const improved = await polishStoryContent(formData.content);
+        setFormData({ ...formData, content: improved });
+      }
+    } catch (error) {
+      console.error('AI Polish Error:', error);
+      alert('Failed to process with AI. Please try again.');
     } finally {
       setAiLoading(false);
     }
   };
 
   const handleSave = async (isPublished) => {
-    if (!user) return;
+    if (!user) {
+      alert('You must be logged in to save a story!');
+      return;
+    }
+
+    if (!formData.title.trim()) {
+      alert('Please enter a title for your story!');
+      return;
+    }
+
+    if (!formData.content.trim()) {
+      alert('Please add some content to your story!');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -72,16 +101,26 @@ const StoryEditor = ({ user }) => {
         authorName: user.username
       };
 
+      let result;
       if (id) {
-        await updatePost(id, postData);
+        result = await updatePost(id, postData);
       } else {
-        await createPost(postData);
+        result = await createPost(postData);
       }
       
-      navigate('/profile');
+      if (result) {
+        if (isPublished) {
+          alert('🎉 Story published successfully!');
+        } else {
+          alert('📝 Draft saved successfully!');
+        }
+        navigate('/profile');
+      } else {
+        throw new Error('Failed to save story');
+      }
     } catch (error) {
-      console.error(error);
-      alert('Failed to save story.');
+      console.error('Save error:', error);
+      alert('Failed to save story. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }

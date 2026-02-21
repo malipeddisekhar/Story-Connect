@@ -4,6 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import { getPostsByAuthor } from '../services/postService';
 import { toggleFollow, isFollowing, getUserStats } from '../services/readerService';
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://storyconnect-backend.onrender.com/api';
+
 const AuthorProfile = ({ user }) => {
   const { authorId } = useParams();
   const [author, setAuthor] = useState(null);
@@ -42,7 +44,7 @@ const AuthorProfile = ({ user }) => {
         });
       } else {
         // Fetch author from API
-        const response = await fetch(`http://localhost:5000/api/users`);
+        const response = await fetch(`${API_URL}/users`);
         const users = await response.json();
         const authorData = users.find((u) => u.id === authorId);
         if (authorData) {

@@ -276,6 +276,14 @@ export const clearCurrentUser = () => {
   localStorage.removeItem('token');
 };
 
+export const authService = {
+  getCurrentUser,
+  setCurrentUser,
+  clearCurrentUser,
+  updateProfile,
+};
+
+
 
 
 
