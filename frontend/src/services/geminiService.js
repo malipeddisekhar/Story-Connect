@@ -116,32 +116,24 @@ const generateWithGroq = async (title, category) => {
       result = JSON.parse(responseText);
     } catch (parseError) {
       console.error('❌ JSON Parse Error:', parseError);
-      alert('Failed to parse API response. Check console for details.');
-      return '';
+      throw new Error('Failed to parse API response');
     }
     
     console.log('📋 Parsed API Response:', result);
     
     if (!response.ok) {
       console.error('❌ HTTP Error:', response.status, result);
-      if (result.error) {
-        alert(`API Error (${response.status}): ${result.error.message || JSON.stringify(result.error)}`);
-      } else {
-        alert(`API Error (${response.status}): ${responseText}`);
-      }
-      return '';
+      throw new Error(`API Error (${response.status}): ${result.error?.message || responseText}`);
     }
     
     if (result.error) {
       console.error('❌ Groq API Error:', result.error);
-      alert(`Groq API Error: ${result.error.message || JSON.stringify(result.error)}`);
-      return '';
+      throw new Error(`Groq API Error: ${result.error.message || JSON.stringify(result.error)}`);
     }
     
     if (!result.choices || !result.choices[0] || !result.choices[0].message) {
       console.error('❌ Unexpected response format:', result);
-      alert('Unexpected API response format. Check console for details.');
-      return '';
+      throw new Error('Unexpected API response format');
     }
     
     const generatedContent = result.choices[0].message.content || '';
@@ -150,8 +142,7 @@ const generateWithGroq = async (title, category) => {
     return generatedContent;
   } catch (error) {
     console.error("❌ Groq Error:", error);
-    alert(`Network error: ${error.message}. Check your internet connection and API key.`);
-    return '';
+    throw error;
   }
 };
 
