@@ -101,12 +101,16 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-slate-800 pt-8 mt-8 flex flex-col items-center gap-2 text-center">
           <p className="text-sm text-slate-500">
             © {new Date().getFullYear()} StoryConnect. All rights reserved.
           </p>
           <p className="text-sm text-slate-500">
-            Made with ❤️ for storytellers worldwide
+            Made with ❤️ for storytellers worldwide &mdash; Crafted by{' '}
+            <span className="text-indigo-400 font-semibold tracking-wide">MALIPEDDI SEKHAR</span>
+          </p>
+          <p className="text-xs text-slate-600 italic mt-1">
+            "Every great story begins with a single word — dare to write yours."
           </p>
         </div>
       </div>
